@@ -86,7 +86,7 @@ void MainWindow::setGraphs()
         usage->graph(i)->setPen(QPen(QColor::fromHsv(step * i, 255, 255)));
         usage->graph(i)->setName("cpu" + QVariant(i - 1).toString());
     }
-    usage->setLegend(usage_legend_columns);
+    usage->setLegend(usage_legend_columns, cpu->get_processors_count() / 2 + 1);
     usage->plotLayout()->insertRow(0);
     QCPTextElement *title = new QCPTextElement(usage, QString::fromStdString(cpu->get_model()), QFont("sans", 14, QFont::Bold));
     usage->plotLayout()->addElement(0, 0, title);
@@ -98,8 +98,8 @@ void MainWindow::setGraphs()
     frequency->xAxis2->setTicks(false);
     frequency->yAxis->setTicks(false);
     frequency->setRangeWithTicker(frequency->yAxis2, 0,
-                                  cpu->get_max_freq() * 2 - ((cpu->get_max_freq() * 2) % 500), 500, tr("MHz"));
-    frequency->yAxis->setRange(0, cpu->get_max_freq() * 2 - ((cpu->get_max_freq() * 2) % 500));
+                                  qMin(cpu->get_max_freq() * 2 - (cpu->get_max_freq() * 2) % 500, 8000), 500, tr("MHz"));
+    frequency->yAxis->setRange(0, qMin(cpu->get_max_freq() * 2 - (cpu->get_max_freq() * 2) % 500, 8000));
     frequency->setRangeWithTicker(frequency->xAxis, 0, 60, 10, tr("s"));
     frequency->xAxis->setRangeReversed(true);
     frequency->addGraph();

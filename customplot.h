@@ -13,12 +13,12 @@ public:
     {
     }
 
-    void setLegend(QVector<QPair<QString, QString>> column_names)
+    void setLegend(QVector<QPair<QString, QString>> column_names, int count_in_row = 5)
     {
         legend->setVisible(true);
         plotLayout()->addElement(1, 0, legend);
         legend->setFillOrder(QCPLayoutGrid::foColumnsFirst, true);
-        legend->setWrap(5);
+        legend->setWrap(count_in_row);
         legend->setFont(QFont("ubuntu", 14));
         for (int i = 0; i < column_names.size(); i++)
         {

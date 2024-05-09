@@ -111,11 +111,11 @@ void Disk::update()
             sscanf(str, "%*d %*d %*s %*d %*d %lld %*d %*d %*d %lld", &current_sectors_readed, &current_sectors_writed);
             read_speed[i] = (float)(current_sectors_readed - previous_sectors_readed[i]) * sector_size[i] /
                             (current_time.tv_sec - previous_time.tv_sec +
-                             (current_time.tv_usec - previous_time.tv_usec) / 1000000.0);
+                             (float)(current_time.tv_usec - previous_time.tv_usec) / 1000000.0);
             read_speed[i] /= 1048576.0;
             write_speed[i] = (float)(current_sectors_writed - previous_sectors_writed[i]) * sector_size[i] /
                              (current_time.tv_sec - previous_time.tv_sec +
-                              (current_time.tv_usec - previous_time.tv_usec) / 1000000.0);
+                              (float)(current_time.tv_usec - previous_time.tv_usec) / 1000000.0);
             write_speed[i] /= 1048576.0;
             previous_sectors_readed[i] = current_sectors_readed;
             previous_sectors_writed[i] = current_sectors_writed;
