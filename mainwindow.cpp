@@ -220,7 +220,7 @@ void MainWindow::setGraphs()
 
 void MainWindow::setVectors()
 {
-    for (float i = 0.0; i <= 60.0 / UPD_TIME; i += UPD_TIME)
+    for (float i = 0.0; i <= 60.0; i += UPD_TIME)
     {
         time.append(i);
         memory_usage.append(0);
@@ -233,7 +233,7 @@ void MainWindow::setVectors()
     cpu_usage = QVector<QVector<double>>(cpu->get_processors_count() + 1);
     cpu_frequency = QVector<QVector<double>>(cpu->get_processors_count() + 1);
     for (int i = 0; i <= cpu->get_processors_count(); i++)
-        for (int j = 0; j <= 60 / UPD_TIME; j++)
+        for (float j = 0; j <= 60.0 / UPD_TIME; j += UPD_TIME)
         {
             cpu_usage[i].append(0);
             cpu_frequency[i].append(0);
@@ -327,7 +327,7 @@ void *MainWindow::memoryThread(void *arg)
                      QString::number(mw->memory->get_swap_total() - mw->memory->get_swap_free(), 'f', 1) + tr("GB of ") +
                      QString::number(mw->memory->get_swap_total(), 'f', 1) + tr("GB"));
         mw->memory_graph->replot();
-        sleep(1);
+        usleep(UPD_TIME * 1000000);
         pthread_testcancel();
     }
 }
