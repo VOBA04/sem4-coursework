@@ -352,7 +352,7 @@ void *MainWindow::disksThread(void *arg)
                 ->setVal(QString::number(mw->disks_write_speed[i][0], 'f', 2) + tr("MB/s"));
             mw->disk_graphs[i]->replot();
         }
-        sleep(1);
+        usleep(UPD_TIME * 1000000);
         pthread_testcancel();
     }
 }
