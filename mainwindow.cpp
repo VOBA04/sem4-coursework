@@ -391,7 +391,7 @@ void *MainWindow::netsThread(void *arg)
                 ->setVal(QString::number(mw->wireless_transmiting_speed[0], 'f', 2) + tr("Mb/s"));
             mw->wireless->replot();
         }
-        sleep(1);
+        usleep(UPD_TIME * 1000000);
         pthread_testcancel();
     }
 }
