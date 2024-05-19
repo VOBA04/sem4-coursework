@@ -220,7 +220,7 @@ void MainWindow::setGraphs()
 
 void MainWindow::setVectors()
 {
-    for (int i = 0; i <= 60 / UPD_TIME; i++)
+    for (float i = 0.0; i <= 60.0 / UPD_TIME; i += UPD_TIME)
     {
         time.append(i);
         memory_usage.append(0);
@@ -262,15 +262,9 @@ void MainWindow::setThreads()
 void *MainWindow::cpuThread(void *arg)
 {
     MainWindow *mw = (MainWindow *)arg;
-    struct timespec time, timenow = {0, 0};
     while (true)
     {
-        clock_gettime(CLOCK_MONOTONIC, &time);
-        while (timenow.tv_sec < (time.tv_sec + 1))
-        {
-            mw->cpu->update();
-            clock_gettime(CLOCK_MONOTONIC, &timenow);
-        }
+        mw->cpu->update();
         mw->cpu_usage[0].push_front(mw->cpu->get_usage());
         mw->cpu_usage[0].pop_back();
         for (int i = 0; i < mw->cpu->get_processors_count(); i++)
@@ -305,7 +299,7 @@ void *MainWindow::cpuThread(void *arg)
                 ->setVal(QString::number(mw->cpu_frequency[i][0], 'f', 0) + tr("MHz"));
         }
         mw->frequency->replot();
-        // sleep(1);
+        usleep(UPD_TIME * 1000000);
         pthread_testcancel();
     }
 }
