@@ -233,7 +233,7 @@ void MainWindow::setVectors()
     cpu_usage = QVector<QVector<double>>(cpu->get_processors_count() + 1);
     cpu_frequency = QVector<QVector<double>>(cpu->get_processors_count() + 1);
     for (int i = 0; i <= cpu->get_processors_count(); i++)
-        for (float j = 0; j <= 60.0 / UPD_TIME; j += UPD_TIME)
+        for (float j = 0.0; j <= 60.0; j += UPD_TIME)
         {
             cpu_usage[i].append(0);
             cpu_frequency[i].append(0);
@@ -241,7 +241,7 @@ void MainWindow::setVectors()
     disks_read_speed = QVector<QVector<double>>(disks->get_disks_count());
     disks_write_speed = QVector<QVector<double>>(disks->get_disks_count());
     for (int i = 0; i < disks->get_disks_count(); i++)
-        for (int j = 0; j <= 60 / UPD_TIME; j++)
+        for (float j = 0.0; j <= 60.0; j += UPD_TIME)
         {
             disks_read_speed[i].append(0);
             disks_write_speed[i].append(0);
