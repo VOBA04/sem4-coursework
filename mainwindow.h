@@ -9,7 +9,8 @@
 #include "Net.h"
 #include <pthread.h>
 #include "percentticker.h"
-// #include "threads.h"
+
+const float UPD_TIME = 0.1;
 
 class MainWindow : public QMainWindow, protected Ui::MainWindow
 {
