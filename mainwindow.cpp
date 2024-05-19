@@ -220,7 +220,7 @@ void MainWindow::setGraphs()
 
 void MainWindow::setVectors()
 {
-    for (int i = 0; i <= 60; i++)
+    for (int i = 0; i <= 60 / UPD_TIME; i++)
     {
         time.append(i);
         memory_usage.append(0);
@@ -233,7 +233,7 @@ void MainWindow::setVectors()
     cpu_usage = QVector<QVector<double>>(cpu->get_processors_count() + 1);
     cpu_frequency = QVector<QVector<double>>(cpu->get_processors_count() + 1);
     for (int i = 0; i <= cpu->get_processors_count(); i++)
-        for (int j = 0; j <= 60; j++)
+        for (int j = 0; j <= 60 / UPD_TIME; j++)
         {
             cpu_usage[i].append(0);
             cpu_frequency[i].append(0);
@@ -241,7 +241,7 @@ void MainWindow::setVectors()
     disks_read_speed = QVector<QVector<double>>(disks->get_disks_count());
     disks_write_speed = QVector<QVector<double>>(disks->get_disks_count());
     for (int i = 0; i < disks->get_disks_count(); i++)
-        for (int j = 0; j <= 60; j++)
+        for (int j = 0; j <= 60 / UPD_TIME; j++)
         {
             disks_read_speed[i].append(0);
             disks_write_speed[i].append(0);
