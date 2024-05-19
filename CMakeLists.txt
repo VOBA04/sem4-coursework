@@ -15,8 +15,6 @@ set(CMAKE_PREFIX_PATH "/home/vova/Qt/6.7.0/gcc_64")
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets PrintSupport)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport)
 
-set(TS_FILES Overseer_ru_BY.ts)
-
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
@@ -35,7 +33,6 @@ set(PROJECT_SOURCES
         customplot.h
         percentticker.h
         squarelegenditem.h
-        ${TS_FILES}
 )
 
 qt_add_executable(Overseer
