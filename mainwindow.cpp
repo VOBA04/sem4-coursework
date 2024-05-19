@@ -33,7 +33,6 @@ MainWindow::~MainWindow()
 void MainWindow::setButtons()
 {
     buttons->addItem(new QListWidgetItem(tr("CPU")));
-
     buttons->addItem(new QListWidgetItem(tr("Memory")));
     for (int i = 0; i < disks->get_disks_count(); i++)
         buttons->addItem(new QListWidgetItem(tr("Disk ") + QVariant(i + 1).toString()));

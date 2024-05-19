@@ -12,8 +12,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_PREFIX_PATH "/home/vova/Qt/6.7.0/gcc_64")
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets PrintSupport LinguistTools)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport LinguistTools)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets PrintSupport)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport)
 
 set(TS_FILES Overseer_ru_BY.ts)
 
@@ -35,7 +35,6 @@ set(PROJECT_SOURCES
         customplot.h
         percentticker.h
         squarelegenditem.h
-        #threads.h
         ${TS_FILES}
 )
 
