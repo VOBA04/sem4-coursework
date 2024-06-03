@@ -8,11 +8,19 @@
 #include "Disk.h"
 #include "Net.h"
 #include <pthread.h>
-#include "percentticker.h"
 
-const float UPD_TIME = 0.1;
+const float UPD_TIME = 0.5;
 
-class MainWindow : public QMainWindow, protected Ui::MainWindow
+enum graph_type
+{
+    CPU,
+    MEMORY,
+    DISKS,
+    NET
+};
+
+class MainWindow : public QMainWindow,
+                   protected Ui::MainWindow
 {
     Q_OBJECT
 
@@ -56,5 +64,6 @@ public:
 
 public slots:
     void openCurrentAndCloseOtherGraphs(QListWidgetItem *);
+    void replotGraph(enum graph_type);
 };
 #endif // MAINWINDOW_H

@@ -128,6 +128,8 @@ void Disk::update()
             i++;
         }
     }
+    previous_time.tv_sec = current_time.tv_sec;
+    previous_time.tv_usec = current_time.tv_usec;
 }
 
 Disk::~Disk()

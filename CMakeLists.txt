@@ -31,7 +31,6 @@ set(PROJECT_SOURCES
         qcustomplot.cpp
         qcustomplot.h
         customplot.h
-        percentticker.h
         squarelegenditem.h
 )
 

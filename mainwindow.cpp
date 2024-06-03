@@ -137,8 +137,8 @@ void MainWindow::setGraphs()
     for (int i = 0; i < disks->get_disks_count(); i++)
     {
         QVector<QPair<QString, QString>> disk_legend_columns;
-        disk_legend_columns.append(QPair<QString, QString>("Reading", tr("MB/s")));
-        disk_legend_columns.append(QPair<QString, QString>("Writing", tr("MB/s")));
+        disk_legend_columns.append(QPair<QString, QString>("Reading", "MB/s"));
+        disk_legend_columns.append(QPair<QString, QString>("Writing", "MB/s"));
         disk_graphs.append(new CustomPlot(centralwidget));
         disk_graphs[i]->setObjectName("disk " + QVariant(i).toString());
         graphs->addWidget(disk_graphs[i]);
@@ -148,9 +148,9 @@ void MainWindow::setGraphs()
         disk_graphs[i]->xAxis2->setVisible(true);
         disk_graphs[i]->xAxis2->setTicks(false);
         disk_graphs[i]->yAxis->setTicks(false);
-        disk_graphs[i]->yAxis->setRange(0, 20);
-        disk_graphs[i]->setRangeWithTicker(disk_graphs[i]->xAxis, 0, 60, 10, tr("s"));
-        disk_graphs[i]->setRangeWithTicker(disk_graphs[i]->yAxis2, 0, 20, 2, tr("MB/s"));
+        disk_graphs[i]->yAxis->setRange(0, 500);
+        disk_graphs[i]->setRangeWithTicker(disk_graphs[i]->xAxis, 0, 60, 10, "s");
+        disk_graphs[i]->setRangeWithTicker(disk_graphs[i]->yAxis2, 0, 500, 20, "MB/s");
         disk_graphs[i]->xAxis->setRangeReversed(true);
         disk_graphs[i]->addGraph();
         disk_graphs[i]->graph(0)->setPen(QPen(Qt::red));
@@ -178,9 +178,9 @@ void MainWindow::setGraphs()
         ethernet->xAxis2->setVisible(true);
         ethernet->xAxis2->setTicks(false);
         ethernet->yAxis->setTicks(false);
-        ethernet->yAxis->setRange(0, 10);
-        ethernet->setRangeWithTicker(ethernet->xAxis, 0, 60, 10, tr("s"));
-        ethernet->setRangeWithTicker(ethernet->yAxis2, 0, 10, 1, tr("Mb/s"));
+        ethernet->yAxis->setRange(0, 100);
+        ethernet->setRangeWithTicker(ethernet->xAxis, 0, 60, 10, "s");
+        ethernet->setRangeWithTicker(ethernet->yAxis2, 0, 100, 10, "Mb/s");
         ethernet->xAxis->setRangeReversed(true);
         ethernet->addGraph();
         ethernet->graph(0)->setPen(QPen(Qt::red));
@@ -204,9 +204,9 @@ void MainWindow::setGraphs()
         wireless->xAxis2->setVisible(true);
         wireless->xAxis2->setTicks(false);
         wireless->yAxis->setTicks(false);
-        wireless->yAxis->setRange(0, 10);
-        wireless->setRangeWithTicker(wireless->xAxis, 0, 60, 10, tr("s"));
-        wireless->setRangeWithTicker(wireless->yAxis2, 0, 10, 1, tr("Mb/s"));
+        wireless->yAxis->setRange(0, 100);
+        wireless->setRangeWithTicker(wireless->xAxis, 0, 60, 10, "s");
+        wireless->setRangeWithTicker(wireless->yAxis2, 0, 100, 10, "Mb/s");
         wireless->xAxis->setRangeReversed(true);
         wireless->addGraph();
         wireless->graph(0)->setPen(QPen(Qt::red));
@@ -288,7 +288,6 @@ void *MainWindow::cpuThread(void *arg)
             ((SquareLegendItem *)mw->usage->legend->item(i))
                 ->setVal(QString::number(mw->cpu_usage[i][0], 'f', 2) + "%");
         }
-        mw->usage->replot();
         mw->frequency->graph(0)->setData(mw->time, mw->cpu_frequency[0]);
         ((SquareLegendItem *)mw->frequency->legend->item(0))
             ->setVal(QString::number(mw->cpu_frequency[0][0], 'f', 0) + tr("MHz"));
@@ -298,7 +297,7 @@ void *MainWindow::cpuThread(void *arg)
             ((SquareLegendItem *)mw->frequency->legend->item(i))
                 ->setVal(QString::number(mw->cpu_frequency[i][0], 'f', 0) + tr("MHz"));
         }
-        mw->frequency->replot();
+        emit mw->replotGraph(CPU);
         usleep(UPD_TIME * 1000000);
         pthread_testcancel();
     }
@@ -326,7 +325,7 @@ void *MainWindow::memoryThread(void *arg)
             ->setVal(QString::number(mw->memory_swap[0], 'f', 2) + "% " +
                      QString::number(mw->memory->get_swap_total() - mw->memory->get_swap_free(), 'f', 1) + tr("GB of ") +
                      QString::number(mw->memory->get_swap_total(), 'f', 1) + tr("GB"));
-        mw->memory_graph->replot();
+        emit mw->replotGraph(MEMORY);
         usleep(UPD_TIME * 1000000);
         pthread_testcancel();
     }
@@ -350,8 +349,8 @@ void *MainWindow::disksThread(void *arg)
                 ->setVal(QString::number(mw->disks_read_speed[i][0], 'f', 2) + tr("MB/s"));
             ((SquareLegendItem *)mw->disk_graphs[i]->legend->item(1))
                 ->setVal(QString::number(mw->disks_write_speed[i][0], 'f', 2) + tr("MB/s"));
-            mw->disk_graphs[i]->replot();
         }
+        emit mw->replotGraph(DISKS);
         usleep(UPD_TIME * 1000000);
         pthread_testcancel();
     }
@@ -375,7 +374,6 @@ void *MainWindow::netsThread(void *arg)
                 ->setVal(QString::number(mw->ethernet_receiving_speed[0], 'f', 2) + tr("Mb/s"));
             ((SquareLegendItem *)mw->ethernet->legend->item(1))
                 ->setVal(QString::number(mw->ethernet_transmiting_speed[0], 'f', 2) + tr("Mb/s"));
-            mw->ethernet->replot();
         }
         if (mw->nets->get_interface(WIRELESS))
         {
@@ -389,8 +387,8 @@ void *MainWindow::netsThread(void *arg)
                 ->setVal(QString::number(mw->wireless_receiving_speed[0], 'f', 2) + tr("Mb/s"));
             ((SquareLegendItem *)mw->wireless->legend->item(1))
                 ->setVal(QString::number(mw->wireless_transmiting_speed[0], 'f', 2) + tr("Mb/s"));
-            mw->wireless->replot();
         }
+        emit mw->replotGraph(NET);
         usleep(UPD_TIME * 1000000);
         pthread_testcancel();
     }
@@ -455,5 +453,28 @@ void MainWindow::openCurrentAndCloseOtherGraphs(QListWidgetItem *item)
         if (nets->get_interface(ETHERNET))
             ethernet->hide();
         wireless->show();
+    }
+}
+
+void MainWindow::replotGraph(enum graph_type graph)
+{
+    if (graph == CPU)
+    {
+        usage->replot();
+        frequency->replot();
+    }
+    else if (graph == MEMORY)
+        memory_graph->replot();
+    else if (graph == DISKS)
+    {
+        for (int i = 0; i < disks->get_disks_count(); i++)
+            disk_graphs[i]->replot();
+    }
+    else if (graph == NET)
+    {
+        if (nets->get_interface(ETHERNET))
+            ethernet->replot();
+        if (nets->get_interface(WIRELESS))
+            wireless->replot();
     }
 }

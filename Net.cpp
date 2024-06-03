@@ -119,6 +119,8 @@ void Net::update()
             previous_transmited_wireless = transmited_bytes;
         }
     }
+    previous_time.tv_sec = current_time.tv_sec;
+    previous_time.tv_usec = current_time.tv_usec;
 }
 
 Net::~Net()

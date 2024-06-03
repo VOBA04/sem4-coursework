@@ -122,6 +122,9 @@ std::vector<int> Cpu::get_processors_freq()
 
 void Cpu::update_usage()
 {
+    char str[255];
+    while (!feof(stat))
+        (void)fgets(str, 255, stat);
     fseek(stat, 0, SEEK_SET);
     long long tasks_metrics[10];
     long long sum[processors_number + 1] = {0};
@@ -131,7 +134,7 @@ void Cpu::update_usage()
            &(tasks_metrics[5]), &(tasks_metrics[6]), &(tasks_metrics[7]), &(tasks_metrics[8]), &(tasks_metrics[9]));
     for (int i = 0; i < 9; i++)
         sum[0] += tasks_metrics[i];
-    idle[0] = tasks_metrics[3];
+    idle[0] = tasks_metrics[3] + tasks_metrics[4];
     for (int i = 0; i < processors_number; i++)
     {
         fscanf(stat, "%*s %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld",
@@ -139,14 +142,17 @@ void Cpu::update_usage()
                &(tasks_metrics[5]), &(tasks_metrics[6]), &(tasks_metrics[7]), &(tasks_metrics[8]), &(tasks_metrics[9]));
         for (int j = 0; j < 9; j++)
             sum[i + 1] += tasks_metrics[j];
-        idle[i + 1] = tasks_metrics[3];
+        idle[i + 1] = tasks_metrics[3] + tasks_metrics[4];
     }
     usage = 100 - (float)(idle[0] - prev_idle[0]) * 100.0 / (float)(sum[0] - prev_sum[0]);
+    prev_idle[0] = idle[0];
+    prev_sum[0] = sum[0];
     for (int i = 0; i < processors_number; i++)
-        processors_usage[i] = 100 - (float)(idle[i] - prev_idle[i]) * 100.0 / (float)(sum[i] - prev_sum[i]);
-    char str[255];
-    while (!feof(stat))
-        fgets(str, 255, stat);
+    {
+        processors_usage[i] = 100 - (float)(idle[i + 1] - prev_idle[i + 1]) * 100.0 / (float)(sum[i + 1] - prev_sum[i + 1]);
+        prev_idle[i + 1] = idle[i + 1];
+        prev_sum[i + 1] = sum[i + 1];
+    }
 }
 
 void Cpu::update_frequency()
