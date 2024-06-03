@@ -22,7 +22,7 @@ public:
 
         int size = qMin(qMin(rect.width(), rect.height()) / 2, 56);
 
-        painter->setFont(QFont("Consolas", qMin(size * 0.29f, 14.0f)));
+        painter->setFont(QFont("Consolas", qMin(size * 0.27f, 14.0f)));
         QRect squareRect(center.x() - 2 * size, center.y() - 0.8 * size, size, 0.8 * size);
         painter->drawText(QRect(center.x() - size / 2, center.y() - 0.8 * size, 400, 0.8 * size), name + "\r\n" + val, QTextOption());
         painter->drawRect(squareRect);
