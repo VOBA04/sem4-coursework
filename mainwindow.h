@@ -8,6 +8,7 @@
 #include "Disk.h"
 #include "Net.h"
 #include <pthread.h>
+#include "color.h"
 
 const float UPD_TIME = 0.5;
 

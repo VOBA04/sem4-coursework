@@ -32,10 +32,6 @@ MainWindow::~MainWindow()
     free(memory);
     free(disks);
     free(nets);
-    for (int i = 0; i < disk_graphs.size(); i++)
-        free(disk_graphs[i]);
-    free(ethernet);
-    free(wireless);
 }
 
 void MainWindow::setButtons()
@@ -86,11 +82,11 @@ void MainWindow::setGraphs()
     usage->addGraph();
     usage->graph(0)->setPen(QPen(Qt::red));
     usage->graph(0)->setName("cpu");
-    step = 360 / (cpu->get_processors_count() + 2);
+    step = 1530 / (cpu->get_processors_count() + 1);
     for (int i = 1; i <= cpu->get_processors_count(); i++)
     {
         usage->addGraph();
-        usage->graph(i)->setPen(QPen(QColor::fromHsv(step * i, 255, 255)));
+        usage->graph(i)->setPen(QPen(colorWheel(step * i)));
         usage->graph(i)->setName("cpu" + QVariant(i - 1).toString());
     }
     usage->setLegend(usage_legend_columns, cpu->get_processors_count() / 2 + 1);
@@ -112,11 +108,10 @@ void MainWindow::setGraphs()
     frequency->addGraph();
     frequency->graph(0)->setPen(QPen(Qt::red));
     frequency->graph(0)->setName("cpu");
-    step = 360 / (cpu->get_processors_count() + 2);
     for (int i = 1; i <= cpu->get_processors_count(); i++)
     {
         frequency->addGraph();
-        frequency->graph(i)->setPen(QPen(QColor::fromHsv(step * i, 255, 255)));
+        frequency->graph(i)->setPen(QPen(colorWheel(step * i)));
         frequency->graph(i)->setName("cpu" + QVariant(i - 1).toString());
     }
     frequency->setLegend(freq_legend_columns);

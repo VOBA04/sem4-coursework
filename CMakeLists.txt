@@ -32,6 +32,7 @@ set(PROJECT_SOURCES
         qcustomplot.h
         customplot.h
         squarelegenditem.h
+        color.h
 )
 
 qt_add_executable(Overseer
