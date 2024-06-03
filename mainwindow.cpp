@@ -28,6 +28,14 @@ MainWindow::~MainWindow()
         pthread_cancel(nets_thread);
         pthread_join(nets_thread, NULL);
     }
+    free(cpu);
+    free(memory);
+    free(disks);
+    free(nets);
+    for (int i = 0; i < disk_graphs.size(); i++)
+        free(disk_graphs[i]);
+    free(ethernet);
+    free(wireless);
 }
 
 void MainWindow::setButtons()
