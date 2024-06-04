@@ -115,7 +115,7 @@ void MainWindow::setGraphs()
         frequency->graph(i)->setPen(QPen(colorWheel(step * i)));
         frequency->graph(i)->setName("cpu" + QVariant(i - 1).toString());
     }
-    frequency->setLegend(freq_legend_columns);
+    frequency->setLegend(freq_legend_columns, cpu->get_processors_count() / 2 + 1);
 
     QVector<QPair<QString, QString>> memory_legend_columns;
     memory_legend_columns.append(QPair<QString, QString>("Memory", "%"));
