@@ -60,6 +60,7 @@ void MainWindow::setButtons()
 
 void MainWindow::setGraphs()
 {
+    connect(this, &MainWindow::updateGraph, this, &MainWindow::replotGraph);
     int step;
     QVector<QPair<QString, QString>> usage_legend_columns, freq_legend_columns;
     usage_legend_columns.append(QPair<QString, QString>("CPU", "%"));
@@ -300,7 +301,7 @@ void *MainWindow::cpuThread(void *arg)
             ((SquareLegendItem *)mw->frequency->legend->item(i))
                 ->setVal(QString::number(mw->cpu_frequency[i][0], 'f', 0) + tr("MHz"));
         }
-        emit mw->replotGraph(CPU);
+        emit mw->updateGraph(CPU);
         usleep(UPD_TIME * 1000000);
         pthread_testcancel();
     }
@@ -328,7 +329,7 @@ void *MainWindow::memoryThread(void *arg)
             ->setVal(QString::number(mw->memory_swap[0], 'f', 2) + "% " +
                      QString::number(mw->memory->get_swap_total() - mw->memory->get_swap_free(), 'f', 1) + tr("GB of ") +
                      QString::number(mw->memory->get_swap_total(), 'f', 1) + tr("GB"));
-        emit mw->replotGraph(MEMORY);
+        emit mw->updateGraph(MEMORY);
         usleep(UPD_TIME * 1000000);
         pthread_testcancel();
     }
@@ -353,7 +354,7 @@ void *MainWindow::disksThread(void *arg)
             ((SquareLegendItem *)mw->disk_graphs[i]->legend->item(1))
                 ->setVal(QString::number(mw->disks_write_speed[i][0], 'f', 2) + tr("MB/s"));
         }
-        emit mw->replotGraph(DISKS);
+        emit mw->updateGraph(DISKS);
         usleep(UPD_TIME * 1000000);
         pthread_testcancel();
     }
@@ -391,7 +392,7 @@ void *MainWindow::netsThread(void *arg)
             ((SquareLegendItem *)mw->wireless->legend->item(1))
                 ->setVal(QString::number(mw->wireless_transmiting_speed[0], 'f', 2) + tr("Mb/s"));
         }
-        emit mw->replotGraph(NET);
+        emit mw->updateGraph(NET);
         usleep(UPD_TIME * 1000000);
         pthread_testcancel();
     }

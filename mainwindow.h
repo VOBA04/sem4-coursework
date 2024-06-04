@@ -66,5 +66,8 @@ public:
 public slots:
     void openCurrentAndCloseOtherGraphs(QListWidgetItem *);
     void replotGraph(enum graph_type);
+
+signals:
+    void updateGraph(enum graph_type);
 };
 #endif // MAINWINDOW_H
