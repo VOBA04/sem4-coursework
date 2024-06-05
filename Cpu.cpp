@@ -55,7 +55,7 @@ Cpu::Cpu()
            &(tasks_metrics[5]), &(tasks_metrics[6]), &(tasks_metrics[7]), &(tasks_metrics[8]), &(tasks_metrics[9]));
     for (int i = 0; i < 9; i++)
         prev_sum[0] += tasks_metrics[i];
-    prev_idle[0] = tasks_metrics[3];
+    prev_idle[0] = tasks_metrics[3] + tasks_metrics[4];
     for (int i = 0; i < processors_number; i++)
     {
         fscanf(stat, "%*s %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld",
@@ -63,7 +63,7 @@ Cpu::Cpu()
                &(tasks_metrics[5]), &(tasks_metrics[6]), &(tasks_metrics[7]), &(tasks_metrics[8]), &(tasks_metrics[9]));
         for (int j = 0; j < 9; j++)
             prev_sum[i + 1] += tasks_metrics[j];
-        prev_idle[i + 1] = tasks_metrics[3];
+        prev_idle[i + 1] = tasks_metrics[3] + tasks_metrics[4];
     }
     sleep(1);
     while (!feof(stat))
